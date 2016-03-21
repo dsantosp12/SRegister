@@ -20,7 +20,7 @@ class Person(UserMixin, db.Model):
 
 
 class Student(Person):
-    student_id = db.Column(db.String(255), nullable=False)
+    student_id = db.Column(db.String(255), unique=True, nullable=False)
 
     def __init__(self, first_name, last_name, student_id):
         super().__init__(first_name, last_name)
@@ -32,7 +32,7 @@ class Student(Person):
 
 
 class Visitor(Person):
-    visitor_id = db.Column(db.String(255), nullable=False)
+    visitor_id = db.Column(db.String(255), unique=True, nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
     address = db.Column(db.String(255), nullable=False)
 
@@ -47,3 +47,20 @@ class Visitor(Person):
         return "<Visitor: %r %r>" % (self.first_name,
                                     self.last_name)
 
+
+class Employee(Person):
+    employee_id = db.Column(db.String(255), nullable=False)
+    username = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+
+    def __init__(self, first_name, last_name, employee_id, username,
+                 password, email):
+        super().__init__(first_name, last_name)
+        self.employee_id = employee_id
+        self.username = username
+        self.password = password
+        self.email = email
+
+    def __repr__(self):
+        return "<Employee: %r %r>" % (self.first_name, self.last_name)

@@ -10,7 +10,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 HOST = "127.0.0.1"
 PORT = 3606
 USERNAME = "root"
-PASSWORD = ""
+PASSWORD = "root"
 DATABASE_NAME = "sregister"
 
 SQLALCHEMY_DATABASE_URI = (
