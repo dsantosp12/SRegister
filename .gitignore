@@ -1,4 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
 config.py
-__pycache__
+__pycache__/

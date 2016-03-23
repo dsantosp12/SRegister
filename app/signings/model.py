@@ -24,4 +24,5 @@ class Signing(db.Model):
                                         self.date_time_to_string())
 
     def date_time_to_string(self):
-        return self.date_time.strftime("%m/%d/%y - %I:%M %p")
+        # return self.date_time.strftime("%m/%d/%y - %I:%M %p")
+        return None
