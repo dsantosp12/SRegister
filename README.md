@@ -9,3 +9,6 @@ makes sure that the host cannot signing more than 2 people, and more functionali
 Idea: Julio Hernandez, Github: j13hernandez
 
 Developer: Julio Hernandez & Daniel Santos
+
+## Note
+Ignore the 'build failing' status while this message is here. We are currently developing.

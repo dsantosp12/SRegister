@@ -36,5 +36,5 @@ app.register_blueprint(init)
 
 
 # Setup
-if __name__ == '__main__':
+if __name__ == 'app':
     db.create_all()

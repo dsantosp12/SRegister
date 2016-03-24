@@ -15,8 +15,7 @@ class Person(UserMixin, db.Model):
         self.last_name = last_name
 
     def __repr__(self):
-        return "<Person: %r %r>" % (self.first_name,
-                                    self.last_name)
+        return "<Person: %r %r>" % (self.first_name, self.last_name)
 
 
 class Student(Person):
@@ -27,8 +26,7 @@ class Student(Person):
         self.student_id = student_id
 
     def __repr__(self):
-        return "<Student: %r %r>" % (self.first_name,
-                                    self.last_name)
+        return "<Student: %r %r>" % (self.first_name, self.last_name)
 
 
 class Visitor(Person):
@@ -44,8 +42,7 @@ class Visitor(Person):
         self.address = address
 
     def __repr__(self):
-        return "<Visitor: %r %r>" % (self.first_name,
-                                    self.last_name)
+        return "<Visitor: %r %r>" % (self.first_name, self.last_name)
 
 
 class Employee(Person):

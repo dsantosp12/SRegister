@@ -1,0 +1,2 @@
+class SigningsController:
+    pass

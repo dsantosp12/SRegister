@@ -1,0 +1,2 @@
+class BuildingController:
+    pass
