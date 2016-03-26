@@ -14,6 +14,10 @@ class StudentController:
         pass
 
     @staticmethod
+    def create_student_object(student):
+        pass
+
+    @staticmethod
     def get_student_by_student_id(student_id):
         pass
 
@@ -50,3 +54,7 @@ class VisitorController:
     @staticmethod
     def get_visitor_by_visitor_id(visitor_id):
         pass
+
+
+class EmployeeController(object):
+    pass

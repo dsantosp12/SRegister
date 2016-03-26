@@ -149,17 +149,27 @@ class TestVisitorController(unittest.TestCase):
             )
         )
 
+    def test_create_visitor_object_static_method(self):
+        VisitorController.create_visitor_object(self.visitor)
+
+        self.assertIsNotNone(
+            VisitorController.get_visitor_by_visitor_id(
+                self.visitor.visitor_id
+            )
+        )
+
     def test_create_visitor_static_method(self):
         VisitorController.create_visitor(
-            first_name="John", last_name="Smith",
-            visitor_id="S16632394",
-            date_of_birth=datetime.date.today(),
-            address="123 Main St Lowell, MA 01843"
+            first_name=self.visitor.first_name,
+            last_name=self.visitor.last_name,
+            visitor_id=self.visitor.visitor_id,
+            date_of_birth=self.visitor.date_of_birth,
+            address=self.visitor.address
         )
 
         self.assertIsNotNone(
             VisitorController.get_visitor_by_visitor_id(
-                "S16632394"
+                self.visitor.visitor_id
             )
         )
 
@@ -234,6 +244,17 @@ class TestVisitorController(unittest.TestCase):
                 self.visitor.visitor_id
             ).date_of_birth,
             new_date
+        )
+
+    def test_delete_visitor_static_method(self):
+        VisitorController.delete_visitor(
+            visitor_id=self.visitor.visitor_id
+        )
+
+        self.assertIsNone(
+            VisitorController.get_visitor_by_visitor_id(
+                self.visitor.visitor_id
+            )
         )
 
 if __name__ == '__main__':

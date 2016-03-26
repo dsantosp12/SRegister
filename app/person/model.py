@@ -4,7 +4,7 @@ from app import db
 from flask_login import UserMixin
 
 
-class Person(UserMixin, db.Model):
+class Person(db.Model):
     """Person model"""
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(255), nullable=False)
@@ -19,6 +19,7 @@ class Person(UserMixin, db.Model):
 
 
 class Student(Person):
+    # TODO:ds Add building foreign key so Student knows where it live
     student_id = db.Column(db.String(255), unique=True, nullable=False)
 
     def __init__(self, first_name, last_name, student_id):
@@ -45,7 +46,7 @@ class Visitor(Person):
         return "<Visitor: %r %r>" % (self.first_name, self.last_name)
 
 
-class Employee(Person):
+class Employee(UserMixin, Person):
     employee_id = db.Column(db.String(255), nullable=False)
     username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
