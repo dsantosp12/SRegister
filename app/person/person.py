@@ -20,7 +20,9 @@ class StudentController:
     @staticmethod
     def create_student(first_name, last_name,
                        student_id):
-        pass
+        new_student = Student(first_name, last_name, student_id)
+        db.session.add(new_student)
+        db.session.commit()
 
     @staticmethod
     def create_student_object(student):
@@ -28,7 +30,7 @@ class StudentController:
 
     @staticmethod
     def get_student_by_student_id(student_id):
-        return Student.query.filter(
+        return Student.query.filter_by(
             student_id=student_id
         ).first()
 
@@ -42,7 +44,9 @@ class StudentController:
 
     @staticmethod
     def delete_student(student_id):
-        pass
+        student = StudentController.get_student_by_student_id(student_id)
+        db.session.delete(student)
+        db.session.commit()
 
     @staticmethod
     def modify_first_name(student_id, new_first_name):

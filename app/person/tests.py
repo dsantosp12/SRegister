@@ -1,6 +1,7 @@
 import unittest
 import datetime
 
+from sqlalchemy.orm.exc import UnmappedInstanceError
 from app.person.model import *
 from app.person.person import *
 
@@ -36,11 +37,21 @@ class TestStudentController(unittest.TestCase):
         )
 
     def tearDown(self):
-        StudentController.delete_student(
-            self.student_controller.student_id
-        )
+        try:
+            StudentController.delete_student(
+                self.student_controller.student_id
+            )
+        except UnmappedInstanceError:
+            pass
 
     def test_create_student_method(self):
+        try:
+            StudentController.delete_student(
+                self.student_controller.student_id
+            )
+        except UnmappedInstanceError:
+            pass
+
         self.student_controller.create()
 
         self.assertIsNotNone(
@@ -50,11 +61,14 @@ class TestStudentController(unittest.TestCase):
         )
 
     def test_create_student_static_method(self):
-        StudentController.create_student("Tom", "Hill", "A002345")
+        StudentController.create_student(
+            "Tom", "Hill",
+            self.student_controller.student_id
+        )
 
         self.assertIsNotNone(
             StudentController.get_student_by_student_id(
-                "A002345"
+                self.student_controller.student_id
             )
         )
 
@@ -99,6 +113,11 @@ class TestStudentController(unittest.TestCase):
         self.student_controller.student_id = "A999999999"
 
     def test_delete_student_static_method(self):
+        StudentController.create_student(
+            "John", "Smith",
+            self.student_controller.student_id
+        )
+
         StudentController.delete_student(
             self.student_controller.student_id
         )
