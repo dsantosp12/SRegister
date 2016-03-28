@@ -5,13 +5,12 @@ from flask_login import UserMixin
 
 
 class Person:
-    id = 0
-
-
-class Student(db.Model, Person):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(255), nullable=False)
     last_name = db.Column(db.String(255), nullable=False)
+
+
+class Student(db.Model, Person):
     student_id = db.Column(db.String(255), unique=True, nullable=False)
 
     def __init__(self, first_name, last_name, student_id):
@@ -24,9 +23,6 @@ class Student(db.Model, Person):
 
 
 class Visitor(db.Model, Person):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(255), nullable=False)
-    last_name = db.Column(db.String(255), nullable=False)
     visitor_id = db.Column(db.String(255), unique=True, nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
     address = db.Column(db.String(255), nullable=False)
@@ -44,9 +40,6 @@ class Visitor(db.Model, Person):
 
 
 class Employee(UserMixin, db.Model, Person):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(255), nullable=False)
-    last_name = db.Column(db.String(255), nullable=False)
     employee_id = db.Column(db.String(255), nullable=False)
     username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
