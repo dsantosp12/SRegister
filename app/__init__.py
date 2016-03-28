@@ -34,6 +34,11 @@ def page_not_found(error):
 from app.views import init
 app.register_blueprint(init)
 
+# Student, Person and Employee views
+from app.person.views import person
+
+# Building views
+from app.building.views import buildings
 
 # Setup
 if __name__ == 'app':

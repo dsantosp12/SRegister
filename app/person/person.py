@@ -1,4 +1,4 @@
-from app.person.model import *
+from app.person.model import Student
 from app import db
 
 
