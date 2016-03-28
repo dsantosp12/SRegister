@@ -1,12 +1,21 @@
 from app.person.model import *
+from app import db
 
 
 class StudentController:
-    def __init__(self, student_id):
+    def __init__(self, first_name, last_name, student_id):
         self.student_id = student_id
+        self.first_name = first_name
+        self.last_name = last_name
 
     def create(self):
-        pass
+        new_student = Student(
+            self.first_name,
+            self.last_name,
+            self.student_id
+        )
+        db.session.add(new_student)
+        db.session.commit()
 
     @staticmethod
     def create_student(first_name, last_name,
@@ -19,7 +28,9 @@ class StudentController:
 
     @staticmethod
     def get_student_by_student_id(student_id):
-        pass
+        return Student.query.filter(
+            student_id=student_id
+        ).first()
 
     @staticmethod
     def get_student_by_id(pk):

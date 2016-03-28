@@ -31,7 +31,9 @@ class TestStudentModel(unittest.TestCase):
 class TestStudentController(unittest.TestCase):
 
     def setUp(self):
-        self.student_controller = StudentController("A00270354")
+        self.student_controller = StudentController(
+            "John", "Smith", "A00270354"
+        )
 
     def tearDown(self):
         StudentController.delete_student(
