@@ -1,0 +1,100 @@
+{% extends 'defaults/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col s12 m6 l8 offset-l2 offset-m4">
+            <div class="center-align">
+                <div class="card">
+                    <div class="card-content">
+                        <h4>Login</h4>
+                        <form method="post" action="{{ url_for('init.login') }}" id="login-form">
+                            <div class="input-field">
+                                <i class="material-icons prefix">account_circle</i>
+                                {{ login_form.username(placeholder=login_form.username.label.text) }}
+                            </div>
+                            <div class="input-field">
+                                <i class="material-icons prefix">lock</i>
+                                {{ login_form.password(placeholder=login_form.password.label.text) }}
+                            </div>
+                            <button class="btn waves-effect waves-light" type="submit">
+                                <i class="material-icons left">input</i>Login</button>
+                        </form>
+
+                        <p id="notification-msg"></p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $("#login-form").submit(function (event) {
+
+            refreshMsg();
+
+            event.preventDefault();
+
+            var $form = $(this),
+                url = $form.attr("action"),
+                username = $form.find("input[name='username']").val(),
+                password = $form.find("input[name='password']").val();
+
+            if (!emptyInput(username, password)) {
+                var post = $.post(url,
+                        {
+                            username: username,
+                            password: password
+                        }
+                );
+
+                post.done(function (data) {
+                    processData(data);
+                }).fail(function () {
+                    alert("Failed!");
+                });
+            } else {
+                showMsg("All fields are required", "error");
+            }
+        });
+
+        function refreshMsg() {
+            var element = $("#notification-msg");
+            element.text("");
+            element.removeClass();
+        }
+
+        function showMsg(text, status) {
+            var msg = $("#notification-msg");
+            msg.text(text);
+
+            switch (status) {
+                case "error":
+                    msg.addClass("red-text");
+                    break;
+                case "success":
+                    msg.addClass("green-text");
+                    break;
+                default:
+                    msg.addClass("black-text");
+            }
+        }
+
+        function emptyInput(username, password) {
+            return username === "" || password == "";
+        }
+
+        function processData(data) {
+            var status = data.status;
+            showMsg(data.msg, status);
+
+            if (status === "success") {
+                window.location="{{ g.domain }}" + data.url;
+            }
+        }
+    </script>
+{% endblock %}

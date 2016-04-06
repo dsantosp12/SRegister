@@ -14,13 +14,13 @@ db = SQLAlchemy(app)
 # LOGIN MANAGER
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'user.login'
+login_manager.login_view = 'init.login'
 
 
 @app.before_request
 def before_request():
     g.user = flask_login.current_user
-    g.domain = "http"
+    g.domain = "http://0.0.0.0:5000"
 
 
 # HTTP error handlers
@@ -33,6 +33,9 @@ def page_not_found(error):
 # Default views
 from app.views import init
 app.register_blueprint(init)
+
+from app.signings.views import signings
+app.register_blueprint(signings)
 
 # Student, Person and Employee views
 from app.person.views import person

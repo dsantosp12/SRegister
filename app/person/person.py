@@ -1,4 +1,6 @@
-from app.person.model import Student
+from flask.ext.bcrypt import check_password_hash
+
+from app.person.model import Student, Employee
 from app import db
 
 
@@ -72,4 +74,38 @@ class VisitorController:
 
 
 class EmployeeController(object):
-    pass
+
+    @staticmethod
+    def get_by_username(username):
+        employee = Employee.query.filter_by(
+            username=username
+        ).first()
+        if employee:
+            return employee
+        else:
+            raise EmployeeController.EmployeeDoesNotExist
+
+    @staticmethod
+    def get_by_id(userid):
+        employee = Employee.query.filter_by(
+            id=userid
+        ).first()
+        if employee:
+            return employee
+        else:
+            raise EmployeeController.EmployeeDoesNotExist
+
+    @staticmethod
+    def validate_user(username, password):
+        username = EmployeeController.get_by_username(username)
+
+        return EmployeeController._verify_hash(
+            username.password, password
+        )
+
+    @staticmethod
+    def _verify_hash(original, hash):
+        return check_password_hash(original, hash)
+
+    class EmployeeDoesNotExist(Exception):
+        pass
