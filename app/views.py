@@ -43,7 +43,7 @@ def login():
                 login_user(employee)
                 status = "success"
                 msg = "Welcome back " + employee.first_name
-                url = url_for('signings.dashboard')
+                url = url_for('init.dashboard')
         return jsonify(
             status=status,
             msg=msg,
@@ -57,3 +57,19 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('init.index'))
+
+
+@init.route('/dashboard/')
+def dashboard():
+    return render_template(
+        'defaults/dashboard.html',
+        title="Dashboard"
+    )
+
+
+@init.route('/dashboard/settings')
+def settings():
+    return render_template(
+        'defaults/settings.html',
+        title="Settings"
+    )

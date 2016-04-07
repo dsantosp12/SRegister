@@ -1,0 +1,62 @@
+{% extends 'defaults/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <nav class="light-blue darken-4">
+        <div class="nav-wrapper">
+            <img src="https://upload.wikimedia.org/wikipedia/en/0/02/UMass-Lowell-logo.png" style="max-height: 65px; margin-left: 10px;">
+            <ul id="nav-mobile" class="right">
+                <li  class="{% if title == "Dashboard" %}active{% endif %}">
+                    <a href="{{ url_for('init.dashboard') }}">Dashboard</a>
+                </li>
+                <li class="{% if title == "Settings" %}active{% endif %}">
+                    <a href="{{ url_for('init.settings') }}">Settings</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('init.logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    {% block dashboard_content %}
+        <style>
+            .icon-color {
+                color: #000;
+            }
+            li {
+                color: #000;
+            }
+        </style>
+        <div class="container" style="padding-top: 10px;">
+            <ul class="collapsible" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">perm_identity</i>Signing</div>
+                    <div class="collapsible-body">
+                        <ul class="collection">
+                            <a href="#"><li class="collection-item">Signing Student<i class="secondary-content material-icons icon-color">input</i></li></a>
+                            <a href="#"><li class="collection-item">Signing Visitor<i class="secondary-content material-icons icon-color">input</i></li></a>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">view_headline</i>Buildings</div>
+                    <div class="collapsible-body">
+                        <ul class="collection">
+                            <a href="#"><li class="collection-item ">Add Building<i class="secondary-content material-icons icon-color">input</i></li></a>
+                            <a href="#"><li class="collection-item">See All<i class="secondary-content material-icons icon-color">input</i></li></a>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">schedule</i>Logs</div>
+                    <div class="collapsible-body">
+                        <ul class="collection">
+                            <a href="#"><li class="collection-item">See All<i class="secondary-content material-icons icon-color">input</i></li></a>
+                            <a href="#"><li class="collection-item">Search<i class="secondary-content material-icons icon-color">input</i></li></a>
+                            <a href="#"><li class="collection-item">Manage<i class="secondary-content material-icons icon-color">input</i></li></a>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    {% endblock %}
+{% endblock %}
