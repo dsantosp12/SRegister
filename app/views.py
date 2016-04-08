@@ -1,6 +1,7 @@
 from flask import (Blueprint, render_template, g, redirect,
                    url_for, request, flash, jsonify)
-from flask.ext.login import login_user, logout_user
+from flask.ext.login import login_user, logout_user, login_required
+from flask_login import current_user
 
 from app import login_manager
 from person.person import EmployeeController
@@ -16,12 +17,15 @@ def load_user(userid):
 
 @init.route('/')
 def index():
-    login_form = LoginForm()
-    return render_template(
-        "defaults/login.html",
-        title="Login",
-        login_form=login_form
-    )
+    if current_user.is_anonymous:
+        login_form = LoginForm()
+        return render_template(
+            "defaults/login.html",
+            title="Login",
+            login_form=login_form
+        )
+    else:
+        return redirect(url_for('init.dashboard'))
 
 
 @init.route('/login/', methods=['GET', 'POST'])
@@ -42,7 +46,7 @@ def login():
             if EmployeeController.validate_user(username, password):
                 login_user(employee)
                 status = "success"
-                msg = "Welcome back " + employee.first_name
+                msg = None
                 url = url_for('init.dashboard')
         return jsonify(
             status=status,
@@ -60,6 +64,7 @@ def logout():
 
 
 @init.route('/dashboard/')
+@login_required
 def dashboard():
     return render_template(
         'defaults/dashboard.html',

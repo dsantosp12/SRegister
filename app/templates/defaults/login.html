@@ -13,17 +13,31 @@
                             <form method="post" action="{{ url_for('init.login') }}" id="login-form">
                                 <div class="input-field">
                                     <i class="material-icons prefix icon-color" style="color:#0d47a1;">account_circle</i>
-                                    {{ login_form.username(placeholder=login_form.username.label.text, style="border-color: #0d47a1; box-shadow: #0d47a1;") }}
+                                    {{ login_form.username }}
+                                    <label for="{{ login_form.username.label.text }}">{{ login_form.username.label.text }}</label>
                                 </div>
                                 <div class="input-field">
                                     <i class="material-icons prefix" style="color:#0d47a1;">lock</i>
-                                    {{ login_form.password(placeholder=login_form.password.label.text, style="border-color: #0d47a1; box-shadow: #0d47a1;") }}
+                                    {{ login_form.password }}
+                                    <label for="{{ login_form.password.label.text }}">{{ login_form.password.label.text }}</label>
                                 </div>
                                 <button class="btn waves-effect waves-light light-blue darken-4" type="submit">
                                     <i class="material-icons left">input</i>Login</button>
                             </form>
 
-                            <p id="notification-msg"></p>
+                            <p id="notification-msg" style="padding-top: 10px;"></p>
+
+                            <div class="preloader-wrapper big active hide" id="spinner-loading">
+                                <div class="spinner-layer spinner-blue-only">
+                                  <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                  </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                  </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                  </div>
+                                </div>
+                          </div>
 
                         </div>
                     </div>
@@ -55,14 +69,29 @@
                 );
 
                 post.done(function (data) {
+                    toggleSpinner();
                     processData(data);
                 }).fail(function () {
+                    toggleSpinner();
                     alert("Failed!");
                 });
             } else {
                 showMsg("All fields are required", "error");
             }
         });
+
+        $(document).ajaxStart(function () {
+           toggleSpinner();
+        });
+
+        function toggleSpinner() {
+            var spinner = $("#spinner-loading");
+            if(spinner.hasClass("hide")) {
+                spinner.removeClass("hide");
+            } else {
+                spinner.addClass("hide");
+            }
+        }
 
         function refreshMsg() {
             var element = $("#notification-msg");

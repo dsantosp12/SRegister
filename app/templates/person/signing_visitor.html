@@ -1,0 +1,67 @@
+{% extends 'defaults/dashboard.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block dashboard_content %}
+    <div class="container">
+        <form method="post" action="" id="sign-in-form">
+            <div class="row" style="padding-top: 20px;">
+                <h4>Visitor Information</h4>
+                <div class="input-field col l6 s6">
+                    {{ form.visitor_id }}
+                    <label for="{{ form.visitor_id.label.text }}">{{ form.visitor_id.label.text }}</label>
+                </div>
+                <div class="input-field col l6 s6">
+                    {{ form.visitor_name }}
+                    <label for="{{ form.visitor_name.label.text }}">{{ form.visitor_name.label.text }}</label>
+                </div>
+            </div>
+             <div class="row">
+                <div class="input-field col l6 s6">
+                    {{ form.street_name }}
+                    <label for="{{ form.street_name.label.text }}">{{ form.street_name.label.text }}</label>
+                </div>
+                <div class="input-field col l6 s6">
+                    {{ form.city_state }}
+                    <label for="{{ form.city_state.label.text }}">{{ form.city_state.label.text }}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col l6 s6">
+                    {{ form.date_of_birth(class="datepicker") }}
+                    <label for="{{ form.date_of_birth.label.text }}">{{ form.date_of_birth.label.text }}</label>
+                </div>
+            </div>
+
+            <div class="row" style="padding-top: 20px;">
+                <h4>Host Information</h4>
+                <div class="input-field col l6 s6">
+                    {{ form.host_id }}
+                    <label for="{{ form.host_id.label.text }}">{{ form.host_id.label.text }}</label>
+                </div>
+                <div class="input-field col l6 s6">
+                    {{ form.host_room }}
+                    <label for="{{ form.host_room.label.text }}">{{ form.host_room.label.text }}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col l4">
+                    <button type="submit" class="waves-effect waves-light btn light-blue darken-4">Sign-In!</button>
+                </div>
+                <div class="col l4">
+                    <button type="button" id="clear-btn" class="waves-effect waves-light btn light-blue darken-4">Clear</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $("#sign-in-form").submit(function (event) {
+            event.preventDefault();
+        });
+
+        $("#clear-btn").click(function () {
+            $("#sign-in-form")[0].reset();
+        })
+    </script>
+{% endblock %}

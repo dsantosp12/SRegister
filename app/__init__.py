@@ -14,7 +14,7 @@ db = SQLAlchemy(app)
 # LOGIN MANAGER
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'init.login'
+login_manager.login_view = 'init.index'
 
 
 @app.before_request
@@ -39,6 +39,7 @@ app.register_blueprint(signings)
 
 # Student, Person and Employee views
 from app.person.views import person
+app.register_blueprint(person)
 
 # Building views
 from app.building.views import buildings
