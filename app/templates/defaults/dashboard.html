@@ -3,7 +3,9 @@
 {% block content %}
     <nav class="light-blue darken-4">
         <div class="nav-wrapper">
-            <img src="https://upload.wikimedia.org/wikipedia/en/0/02/UMass-Lowell-logo.png" style="max-height: 65px; margin-left: 10px;">
+            <a href="{% if title != "Dashboard" %}{{ url_for('init.dashboard') }}{% else %}#{% endif %}">
+                <img src="https://upload.wikimedia.org/wikipedia/en/0/02/UMass-Lowell-logo.png" style="max-height: 65px; margin-left: 10px;">
+            </a>
             <ul id="nav-mobile" class="right">
                 <li  class="{% if title == "Dashboard" %}active{% endif %}">
                     <a href="{{ url_for('init.dashboard') }}">Dashboard</a>
@@ -33,7 +35,7 @@
                     <div class="collapsible-body">
                         <ul class="collection">
                             <a href="#"><li class="collection-item">Sign-in Student<i class="secondary-content material-icons icon-color">input</i></li></a>
-                            <a href="{{ url_for('person.signin_visitor') }}"><li class="collection-item">Sign-in Visitor<i class="secondary-content material-icons icon-color">input</i></li></a>
+                            <a href="{{ url_for('signings.signin_visitor') }}"><li class="collection-item">Sign-in Visitor<i class="secondary-content material-icons icon-color">input</i></li></a>
                         </ul>
                     </div>
                 </li>

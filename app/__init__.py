@@ -34,6 +34,7 @@ def page_not_found(error):
 from app.views import init
 app.register_blueprint(init)
 
+# Sign-In Views
 from app.signings.views import signings
 app.register_blueprint(signings)
 
@@ -47,3 +48,18 @@ from app.building.views import buildings
 # Setup
 if __name__ == 'app':
     db.create_all()
+
+    # TODO:DS Delete this
+    from .person.person import EmployeeController
+    import pymysql.err, sqlalchemy.exc
+    try:
+        EmployeeController.create_employee(
+            "Daniel", "Santos", "01554763",
+            "dsantos", "123456789",
+            "test@test.com"
+        )
+
+    except pymysql.err.IntegrityError:
+            pass
+    except sqlalchemy.exc.IntegrityError:
+        pass
