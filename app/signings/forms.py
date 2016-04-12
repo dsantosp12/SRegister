@@ -1,5 +1,7 @@
-from wtforms import Form, DateTimeField, StringField
+from flask_wtf import Form
+from wtforms import DateTimeField, StringField
 from wtforms.validators import DataRequired, Length
+
 
 class SingInVisitorForm(Form):
     visitor_id = StringField(
@@ -10,7 +12,14 @@ class SingInVisitorForm(Form):
         ]
     )
 
-    visitor_name = StringField(
+    first_name = StringField(
+        label="Visitor Name",
+        validators=[
+            DataRequired(),
+        ]
+    )
+
+    last_name = StringField(
         label="Visitor Name",
         validators=[
             DataRequired(),

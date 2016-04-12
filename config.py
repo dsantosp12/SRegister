@@ -14,7 +14,7 @@ PASSWORD = "root"
 DATABASE_NAME = "sregister"
 
 SQLALCHEMY_DATABASE_URI = (
-    "mysql+pymysql://"
+    "mysql://"
     "{username}:{password}@{host}/{dbname}".format(
             username=USERNAME, password=PASSWORD,
             host=HOST, dbname=DATABASE_NAME
@@ -32,3 +32,5 @@ CSRF_SESSION_KEY = "a*#(!'!<S>?>:=-LA<lSD@!"
 SECRET_KEY = "&!*#S<.,>,E-0oPQW??//CplQ{T}"
 
 DOMAIN_NAME = "http://0.0.0.0:5000"
+
+UPDATE_SESSION_AT = "19:00"  # 7:00pm

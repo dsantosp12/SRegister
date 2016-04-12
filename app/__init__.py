@@ -38,6 +38,7 @@ app.register_blueprint(init)
 from app.signings.views import signings
 app.register_blueprint(signings)
 
+
 # Student, Person and Employee views
 from app.person.views import person
 app.register_blueprint(person)

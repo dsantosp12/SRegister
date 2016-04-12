@@ -1,6 +1,6 @@
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
 
-from app.person.model import Student, Employee
+from app.person.model import Student, Employee, Visitor
 from app import db
 
 
@@ -69,8 +69,42 @@ class VisitorController:
         self.visitor = visitor
 
     @staticmethod
+    def create_visitor(first_name, last_name,
+                       visitor_id, date_of_birth,
+                       address):
+        db.session.add(
+            Visitor(
+                first_name, last_name,
+                visitor_id, date_of_birth,
+                address
+            )
+        )
+        db.session.commit()
+
+    @staticmethod
+    def create_visitor_object(visitor):
+        db.session.add(
+            Visitor(
+                visitor.first_name,
+                visitor.last_name,
+                visitor.visitor_id,
+                visitor.date_of_birth,
+                visitor.address
+            )
+        )
+        db.session.commit()
+
+    @staticmethod
     def get_visitor_by_visitor_id(visitor_id):
-        pass
+        visitor = Visitor.query.filter_by(visitor_id=visitor_id).first()
+        if visitor:
+            return visitor
+        else:
+            raise VisitorNoInSystem("This visitor is no in the system")
+
+
+class VisitorNoInSystem(Exception):
+    pass
 
 
 class EmployeeController(object):
