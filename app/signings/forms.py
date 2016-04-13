@@ -13,21 +13,21 @@ class SingInVisitorForm(Form):
     )
 
     first_name = StringField(
-        label="Visitor Name",
+        label="First Name",
         validators=[
             DataRequired(),
         ]
     )
 
     last_name = StringField(
-        label="Visitor Name",
+        label="Last Name",
         validators=[
             DataRequired(),
         ]
     )
 
     street_name = StringField(
-        label="Stree Name",
+        label="Street Name",
         validators=[
             DataRequired()
         ]

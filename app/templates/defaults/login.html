@@ -116,7 +116,7 @@
         }
 
         function emptyInput(username, password) {
-            return username === "" || password == "";
+            return username.trim() === "" || password.trim() == "";
         }
 
         function processData(data) {
