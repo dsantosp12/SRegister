@@ -3,9 +3,9 @@ from flask import (Blueprint, render_template, redirect,
 from flask.ext.login import login_required
 import flask_login
 
-from app.person.model import Visitor
+from app.person.model import Visitor, Student
 from .forms import SingInVisitorForm
-from .signings import SigningsController
+from .controller import SigningsController
 from app.person.person import StudentController, EmployeeController
 
 signings = Blueprint("signings", __name__)  
@@ -28,15 +28,27 @@ def signin_visitor():
     msg = "We couldn't sign-in this visitor"
 
     if form.is_submitted():
-        current_employee = flask_login.current_user
+        try:
+            SigningsController.create_signing(
+                "ICC",
+                form.host_id.data,
+                Visitor(form=form),
+                flask_login.current_user
+            )
+        except SigningsController.HostRoomFull as e:
+            status = "error"
+            msg = str(e)
+        else:
+            status = "success"
+            msg = "Sign In Created Successfully"
 
-        # visitor = Visitor(form.visitor_name.data)
-
+        return jsonify(
+            status=status,
+            msg=msg
+        )
 
     return render_template(
         'person/signing_visitor.html',
         title="Sign-In Visitor",
-        status=status,
-        msg=msg,
         form=form
     )

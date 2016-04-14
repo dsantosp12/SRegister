@@ -1,14 +1,74 @@
 import unittest
-import datetime
+import time
 
-from app.person.model import *
-from app.signings.model import *
-from app.building.model import *
-from app.person.person import *
-from app.building.building import *
-from app.signings.signings import *
+from selenium import webdriver
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.keys import Keys
+import selenium.common.exceptions as SeleniumException
 
 
+class TestSignInViews(unittest.TestCase):
+    def test_sign_in_existing_visitor(self):
+        self.fill_in_visitor()
+        self.submit_form()
+        self.assertIn("Sign In Created Successfully", self.driver.page_source)
+
+    def test_sign_in_room_full(self):
+        # First Visitor
+        self.fill_in_visitor()
+        self.submit_form()
+        # Second Visitor
+        self.fill_in_visitor()
+        self.submit_form()
+        # Third Visitor
+        self.fill_in_visitor()
+        self.submit_form()
+        self.assertIn("Host already has two visitor", self.driver.page_source)
+
+    def submit_form(self):
+        self.driver.find_element_by_id("submit_signin").send_keys(Keys.ENTER)
+        self.driver.find_element_by_id("submit_signin_last").send_keys(Keys.ENTER)
+
+    def clear_form(self):
+        self.driver.find_element_by_id("clear_form").click()
+
+    def fill_in_visitor(self):
+        self.driver.get("http://0.0.0.0:5000/dashboard/sign-in-visitor")
+        # Select the fields in the form
+        self.driver.find_element_by_id("visitor_id").send_keys("001")
+        self.driver.find_element_by_id("first_name").send_keys("John")
+        self.driver.find_element_by_id("last_name").send_keys("Smith")
+        self.driver.find_element_by_id("date_of_birth").click()
+        # Select month and year
+        month = Select(self.driver.find_element_by_class_name("picker__select--month"))
+        month.select_by_visible_text("June")
+        year = Select(self.driver.find_element_by_class_name("picker__select--year"))
+        year.select_by_value("1983")
+        # Select a day
+        self.driver.find_element_by_xpath("//table[@id='date_of_birth_table']").click()
+        self.driver.find_element_by_id("street_name").send_keys("123 Main St")
+        self.driver.find_element_by_id("city_state").send_keys("Icy, MA")
+        self.driver.find_element_by_id("host_id").send_keys("01443782")
+        self.driver.find_element_by_id("host_room").send_keys("231")
+
+    def setUp(self):
+        self.driver = webdriver.Firefox()
+        self.driver.set_window_size(800, 1000)
+        self.driver.implicitly_wait(5)
+        self.driver.get("http://0.0.0.0:5000/login/")
+        try:
+            self.driver.find_element_by_id("username").send_keys("developer")
+            self.driver.find_element_by_id("password").send_keys("1234567890")
+            self.driver.find_element_by_id("submit_login").send_keys(Keys.ENTER)
+        except SeleniumException.NoSuchElementException:
+            print("Looks like already signed in!")
+        time.sleep(1)
+
+    def tearDown(self):
+        time.sleep(1)
+        self.driver.close()
+
+"""
 class TestSigningController(unittest.TestCase):
 
     def setUp(self):
@@ -147,3 +207,7 @@ class TestSigningController(unittest.TestCase):
             SigningsController.create_signing_object(signing)
         with self.assertRaises(VisitorLiveHere):
             signing_controller.create()
+"""
+
+if __name__ == '__main__':
+    unittest.main()

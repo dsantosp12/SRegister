@@ -13,10 +13,10 @@ class Signing(db.Model):
     visitor = db.Column(db.String(255), db.ForeignKey('visitor.visitor_id'))
     employee = db.Column(db.String(255), db.ForeignKey('employee.employee_id'))
 
-    def __init__(self, building_name, host, visitor, employee):
+    def __init__(self, building_name, host_id, visitor, employee):
         self.date_time = datetime.datetime.now()
         self.building = building_name
-        self.host = host.student_id
+        self.host = host_id
         self.visitor = visitor.visitor_id
         self.employee = employee.employee_id
 

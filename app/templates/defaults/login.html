@@ -21,7 +21,7 @@
                                     {{ login_form.password }}
                                     <label for="{{ login_form.password.label.text }}">{{ login_form.password.label.text }}</label>
                                 </div>
-                                <button class="btn waves-effect waves-light light-blue darken-4" type="submit">
+                                <button id="submit_login" class="btn waves-effect waves-light light-blue darken-4" type="submit">
                                     <i class="material-icons left">input</i>Login</button>
                             </form>
 
@@ -60,7 +60,7 @@
                 username = $form.find("input[name='username']").val(),
                 password = $form.find("input[name='password']").val();
 
-            if (!emptyInput(username, password)) {
+            if (!emptyInputs(username, password)) {
                 var post = $.post(url,
                         {
                             username: username,
@@ -100,32 +100,26 @@
         }
 
         function showMsg(text, status) {
-            var msg = $("#notification-msg");
-            msg.text(text);
-
+            var time = 3000;
             switch (status) {
                 case "error":
-                    msg.addClass("red-text");
+                    Materialize.toast(text, time, 'red-text');
                     break;
                 case "success":
-                    msg.addClass("green-text");
+                    Materialize.toast(text, time, 'green-text');
                     break;
                 default:
-                    msg.addClass("black-text");
+                    Materialize.toast(text, time);
+                    break;
             }
-        }
-
-        function emptyInput(username, password) {
-            return username.trim() === "" || password.trim() == "";
         }
 
         function processData(data) {
             var status = data.status;
             showMsg(data.msg, status);
 
-            if (status === "success") {
+            if (status === "success")
                 window.location="{{ g.domain }}" + data.url;
-            }
         }
     </script>
 {% endblock %}

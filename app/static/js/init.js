@@ -5,5 +5,12 @@ $(document).ready(function(){
 });
 
 $('.datepicker').pickadate({
-    selectYears: 1 // Creates a dropdown of 15 years to control year
-  });
+    selectMonths: true,
+    selectYears: 150
+});
+
+function emptyInputs() {
+    for (var i = 0; i < arguments.length; i++)
+        if (arguments[i].trim() == "") return true;
+    return false;
+}

@@ -20,35 +20,33 @@ class SigningsController:
         pass
 
     @staticmethod
-    def create_signing(building_name, host, visitor, employee):
-        if SigningsController._get_today_signings_by_host(host).__len__() == 2:
-            raise HostRoomFull("{} already has two visitor.".format(host.first_name))
+    def create_signing(building_name, host_id, visitor, employee):
+        if SigningsController._get_today_signings_by_host(host_id).__len__() == 2:
+            raise SigningsController.HostRoomFull("Host already has two visitor")
         else:
             try:
                 VisitorController.get_visitor_by_visitor_id(visitor.visitor_id)
             except VisitorNoInSystem:
                 VisitorController.create_visitor_object(visitor)
             finally:
-                db.session.add(
-                    Signing(
-                        building_name,
-                        host,
-                        visitor,
-                        employee
-                    )
+                singin = Signing(
+                    building_name,
+                    host_id,
+                    visitor,
+                    employee
                 )
+                db.session.add(singin)
                 db.session.commit()
+                return singin
 
     @staticmethod
-    def _get_today_signings_by_host(host):
+    def _get_today_signings_by_host(student_id):
         """Returns a list of today signings by the given host."""
         session = SigningsController.get_session_limits()
         lower_limit = session.lower_limit
-
         upper_limit = session.upper_limit
-
         return db.session.query(Signing).filter(
-            Signing.host == host.student_id,
+            Signing.host == student_id,
             Signing.date_time >= lower_limit,
             Signing.date_time < upper_limit
         ).all()
@@ -85,9 +83,9 @@ class SigningsController:
             db.session.commit()
 
 
-class HostRoomFull(Exception):
-    pass
+    class HostRoomFull(Exception):
+        pass
 
 
-class VisitorLiveHere(Exception):
-    pass
+    class VisitorLiveHere(Exception):
+        pass

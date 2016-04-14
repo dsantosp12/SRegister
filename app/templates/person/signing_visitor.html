@@ -46,14 +46,50 @@
             </div>
             <div class="row">
                 <div class="col l4">
-                    <button type="submit" class="waves-effect waves-light btn light-blue darken-4">Sign-In!</button>
+                    <button id="submit_signin" type="submit" class="waves-effect waves-light btn light-blue darken-4">Sign-In!</button>
                 </div>
                 <div class="col l4">
-                    <button type="button" id="clear-btn" class="waves-effect waves-light btn light-blue darken-4">Clear</button>
+                    <button id="clear_form" type="button" class="waves-effect waves-light btn light-blue darken-4">Clear</button>
+                </div>
+            </div>
+            <!-- Modal Structure -->
+            <div id="verification-modal" class="modal bottom-sheet">
+                <div class="modal-content">
+                    <h5>Please Confirm:</h5>
+                    <div class="row">
+                        <div class="col l3 s3 m3">
+                            <p id="confirm_0">Visitor ID: </p>
+                        </div>
+                        <div class="col l3 s3 m3">
+                            <p id="confirm_1">First Name: </p>
+                        </div>
+                        <div class="col l3 s3 m3">
+                            <p id="confirm_2">Last Name: </p>
+                        </div>
+                        <div class="col l3 s3 m3">
+                            <p id="confirm_3">Date Of Birth: </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col l3 s3 m3">
+                            <p id="confirm_4">Street Name: </p>
+                        </div>
+                        <div class="col l3 s3 m3">
+                            <p id="confirm_5">City & State: </p>
+                        </div>
+                        <div class="col l3 s3 m3">
+                            <p id="confirm_6">Host ID: </p>
+                        </div>
+                        <div class="col l3 s3 m3">
+                            <p id="confirm_7">Host Room: </p>
+                        </div>
+                    </div>
+                    <button id="submit_signin_last" type="button" class="waves-effect waves-light btn light-blue darken-4 modal-action modal-close">Sign-In!</button>
                 </div>
             </div>
         </form>
     </div>
+
 {% endblock %}
 
 {% block scripts %}
@@ -77,25 +113,81 @@
                     street_name, city_state, host_id, host_room);
             if (!isEmpty) {
 
+                appendVerificationText(visitor_id, first_name, last_name, date_of_birth, street_name,
+                        city_state, host_id, host_room);
+                $("#verification-modal").openModal();
+                $("#submit_signin_last").click(function () {
+                    var post = $.post(url,
+                        {
+                            visitor_id: visitor_id,
+                            first_name: first_name,
+                            last_name: last_name,
+                            date_of_birth: date_of_birth,
+                            street_name: street_name,
+                            city_state: city_state,
+                            host_id: host_id,
+                            host_room: host_room
+                        }
+                    );
+                    post.done(function (data) {
+                        processData(data);
+                    }).fail(function () {
+
+                    });
+                });
+
             } else {
-                alert("All fields are required");
+                Materialize.toast("All fields are required", 1000, 'red-text');
             }
 
         });
+
+        $('.modal-trigger').leanModal(
+            {
+                dismissible: true,
+                opacity:.4
+            }
+        );
 
         $("#clear-btn").click(function () {
-            $("#sign-in-form")[0].reset();
+            clearForm();
         });
 
+        function clearForm() {
+            $("#sign-in-form")[0].reset();
+        }
+
+        // TODO:DS This can be moved to init.js
         function emptyValues() {
-            console.log(arguments.length);
-            for (var i = 0; i < arguments.length; i++) {
-                console.log(i);
-                console.log(arguments.valueOf());
+            for (var i = 0; i < arguments.length; i++)
                 if (arguments[i].trim() == "") return true;
-            }
             return false;
         }
 
+        function processData(data) {
+            var status = data.status;
+            showMsg(data.msg, status);
+
+            if (status === "success")
+                    clearForm();
+        }
+
+        function showMsg(text, status) {
+            switch (status) {
+                case "error":
+                    Materialize.toast(text, 3000, 'red-text');
+                    break;
+                case "success":
+                     Materialize.toast(text, 3000, 'green-text');
+                     break;
+                default:
+                     Materialize.toast(text, 3000);
+            }
+        }
+
+        function appendVerificationText() {
+            for (var i = 0; i < arguments.length; i++)
+                $("#confirm_" + i).append(arguments[i]);
+        }
     </script>
 {% endblock %}
